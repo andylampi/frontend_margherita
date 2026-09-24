@@ -47,3 +47,22 @@
   border-color: var(--accent);
   color: var(--accent);
 }
+
+.top-bar-link--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.top-bar-link--disabled:hover {
+  color: var(--text);
+}
+
+.top-bar-logout:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.top-bar-logout:disabled:hover {
+  border-color: var(--border);
+  color: var(--text-h);
+}

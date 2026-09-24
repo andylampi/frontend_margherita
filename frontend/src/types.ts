@@ -8,6 +8,10 @@ export type RequestOptions = {
   body?: FormData;
 };
 
+export type StreamRequestOptions<T> = Omit<RequestOptions, "body"> & {
+  onChunk: (chunk: T) => void;
+};
+
 export type DocumentItem = {
   id: string;
   filename: string;
@@ -104,6 +108,11 @@ export type ChatRecord = {
   citations?: Citation[];
 };
 
+export type ChatStreamChunk =
+  | { type: "content"; delta: string }
+  | { type: "citations"; references: Citation[] }
+  | { type: "error"; message: string };
+
 export type ChatSummary = {
   specialWord: string;
   title: string;
@@ -117,4 +126,13 @@ export type ChatCardProps = {
   onClick?: () => void;
   disabled?: boolean;
   active?: boolean;
+};
+
+export type LayoutContext = {
+  // true mentre è in corso un'operazione che non va interrotta (es. risposta in streaming)
+  setBusy: (value: boolean) => void;
+};
+
+export type TopBarProps = {
+  disabled?: boolean;
 };

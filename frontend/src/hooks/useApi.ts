@@ -1,6 +1,11 @@
 import { useCallback } from "react";
-import type { RequestOptions } from "../types";
-import { ApiError, GET as apiGet, POST as apiPost } from "../utilities/api";
+import type { RequestOptions, StreamRequestOptions } from "../types";
+import {
+  ApiError,
+  GET as apiGet,
+  POST as apiPost,
+  POST_STREAM as apiPostStream,
+} from "../utilities/api";
 import { useAuth } from "./useAuth";
 
 export function useApi() {
@@ -39,5 +44,17 @@ export function useApi() {
     [handleError],
   );
 
-  return { GET, POST };
+  const POST_STREAM = useCallback(
+    async <T = unknown>(options: StreamRequestOptions<T>): Promise<void> => {
+      try {
+        await apiPostStream<T>(options);
+      } catch (error) {
+        handleError(error);
+        throw error;
+      }
+    },
+    [handleError],
+  );
+
+  return { GET, POST, POST_STREAM };
 }

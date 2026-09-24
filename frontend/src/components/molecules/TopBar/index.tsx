@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../../../hooks/useAuth";
 import { dictionary } from "../../../i18n";
+import type { TopBarProps } from "../../../types";
 import "./index.css";
 
 const LINKS = [
@@ -8,7 +9,7 @@ const LINKS = [
   { to: "/documents", label: dictionary.nav.documents },
 ];
 
-function TopBar() {
+function TopBar({ disabled = false }: TopBarProps) {
   const { logout } = useAuth();
 
   return (
@@ -19,14 +20,29 @@ function TopBar() {
             key={to}
             to={to}
             className={({ isActive }) =>
-              `top-bar-link ${isActive ? "top-bar-link--active" : ""}`.trim()
+              [
+                "top-bar-link",
+                isActive && "top-bar-link--active",
+                disabled && "top-bar-link--disabled",
+              ]
+                .filter(Boolean)
+                .join(" ")
             }
+            // un link non ha l'attributo disabled: si blocca la navigazione a mano
+            onClick={(event) => disabled && event.preventDefault()}
+            aria-disabled={disabled}
+            tabIndex={disabled ? -1 : undefined}
           >
             {label}
           </NavLink>
         ))}
       </nav>
-      <button type="button" className="top-bar-logout" onClick={logout}>
+      <button
+        type="button"
+        className="top-bar-logout"
+        onClick={logout}
+        disabled={disabled}
+      >
         {dictionary.nav.logout}
       </button>
     </header>

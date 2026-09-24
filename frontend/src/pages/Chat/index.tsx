@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState, type FormEvent } from "react";
+import { useOutletContext } from "react-router-dom";
 import Button from "../../components/atoms/Button";
 import Input from "../../components/atoms/Input";
 import ChatCard from "../../components/molecules/ChatCard";
@@ -11,10 +12,17 @@ import { dictionary } from "../../i18n";
 import type {
   ChatMessageItem,
   ChatRecord,
+  ChatStreamChunk,
   ChatSummary,
   Citation,
+  LayoutContext,
 } from "../../types";
-import { createSpecialWord, groupChats, toChatMessages } from "../../utilities/chats";
+import {
+  createSpecialWord,
+  groupChats,
+  toChatMessages,
+} from "../../utilities/chats";
+import { ApiError } from "../../utilities/api";
 import { usePopup } from "../../utilities/Container";
 import "./index.css";
 
@@ -22,8 +30,9 @@ const CHAT_URL = `${BASE_URL}/chat/`;
 const PAGE_SIZE = 100;
 
 function Chat() {
-  const { GET, POST } = useApi();
+  const { GET, POST_STREAM } = useApi();
   const { showPopup } = usePopup();
+  const { setBusy } = useOutletContext<LayoutContext>();
   const [collapsed, setCollapsed] = useState(false);
   const [message, setMessage] = useState("");
   const [sending, setSending] = useState(false);
@@ -36,7 +45,6 @@ function Chat() {
     const records: ChatRecord[] = [];
     let page: ChatRecord[];
 
-    // il backend è paginato: si leggono pagine finché non ne arriva una incompleta
     do {
       page = await GET<ChatRecord[]>({
         url: CHAT_URL,
@@ -55,6 +63,12 @@ function Chat() {
     },
     [showPopup],
   );
+
+  // mentre arriva la risposta si blocca anche la top bar (navigazione e logout)
+  useEffect(() => {
+    setBusy(sending);
+    return () => setBusy(false);
+  }, [sending, setBusy]);
 
   useEffect(() => {
     fetchChats().then(setChats).catch(handleChatsError);
@@ -91,25 +105,57 @@ function Chat() {
     }
 
     const userMessageId = crypto.randomUUID();
+    const assistantMessageId = crypto.randomUUID();
+    // la bolla dell'assistente parte vuota (mostra il loader) e si riempie con lo stream
     setMessages((current) => [
       ...current,
       { id: userMessageId, role: "user", content: query },
+      { id: assistantMessageId, role: "assistant", content: "" },
     ]);
     setMessage("");
     setSending(true);
 
+    function updateAssistant(
+      update: (item: ChatMessageItem) => ChatMessageItem,
+    ) {
+      setMessages((current) =>
+        current.map((item) =>
+          item.id === assistantMessageId ? update(item) : item,
+        ),
+      );
+    }
+
     try {
-      await POST<string>({
+      await POST_STREAM<ChatStreamChunk>({
         url: CHAT_URL,
         params: { query: `${specialWord} ${query}` },
         headers: { "content-type": "application/json" },
+        onChunk: (chunk) => {
+          if (chunk.type === "content") {
+            updateAssistant((item) => ({
+              ...item,
+              content: item.content + chunk.delta,
+            }));
+          } else if (chunk.type === "citations") {
+            updateAssistant((item) => ({
+              ...item,
+              citations: chunk.references,
+            }));
+          } else {
+            // errore dentro lo stream: lo status è 200, va gestito a mano
+            throw new ApiError(dictionary.errors.server);
+          }
+        },
       });
-      // ricarica la chat dal server per mostrare anche la risposta
-      await handleOpenChat(specialWord);
+      // la risposta è già a schermo: la lista si aggiorna in background solo per la sidebar
+      fetchChats().then(setChats).catch(handleChatsError);
     } catch (error) {
-      // l'invio è fallito: il messaggio dell'utente non resta nella chat
+      // l'invio è fallito: domanda e risposta parziale non restano nella chat
       setMessages((current) =>
-        current.filter((item) => item.id !== userMessageId),
+        current.filter(
+          (item) =>
+            item.id !== userMessageId && item.id !== assistantMessageId,
+        ),
       );
       const text = error instanceof Error ? error.message : undefined;
       showPopup("dangerous", text);
@@ -181,9 +227,9 @@ function Chat() {
               content={content}
               citations={citations}
               onCitationClick={setCitation}
+              loading={role === "assistant" && !content}
             />
           ))}
-          {sending && <ChatMessage role="assistant" loading />}
         </div>
         <form className="chat-input-bar" onSubmit={handleSend}>
           <Input
