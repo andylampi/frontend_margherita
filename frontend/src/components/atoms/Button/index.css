@@ -1,0 +1,25 @@
+.atom-button {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  font: inherit;
+  color: #fff;
+  background: var(--accent);
+  cursor: pointer;
+}
+
+.atom-button:hover {
+  opacity: 0.9;
+}
+
+.atom-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--accent-bg);
+}
+
+.atom-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

@@ -1,0 +1,16 @@
+{
+  "errors": {
+    "badRequest": "The request was invalid.",
+    "unauthorized": "You are not authorized to perform this action.",
+    "forbidden": "You don't have permission to access this resource.",
+    "notFound": "The requested resource was not found.",
+    "server": "Something went wrong on our end. Please try again later.",
+    "network": "Network error. Please check your connection.",
+    "unknown": "An unexpected error occurred."
+  },
+  "popup": {
+    "success": "Operation completed successfully.",
+    "warn": "Please check the information provided.",
+    "dangerous": "Something went wrong."
+  }
+}

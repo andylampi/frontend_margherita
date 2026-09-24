@@ -1,0 +1,16 @@
+{
+  "errors": {
+    "badRequest": "La richiesta non è valida.",
+    "unauthorized": "Non sei autorizzato a compiere questa azione.",
+    "forbidden": "Non hai i permessi per accedere a questa risorsa.",
+    "notFound": "La risorsa richiesta non è stata trovata.",
+    "server": "Si è verificato un errore sul server. Riprova più tardi.",
+    "network": "Errore di rete. Controlla la tua connessione.",
+    "unknown": "Si è verificato un errore imprevisto."
+  },
+  "popup": {
+    "success": "Operazione completata con successo.",
+    "warn": "Controlla le informazioni inserite.",
+    "dangerous": "Si è verificato un errore."
+  }
+}

@@ -1,0 +1,55 @@
+.popup {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 320px;
+  padding: 14px 40px 14px 16px;
+  border-radius: 8px;
+  color: #fff;
+  box-shadow: var(--shadow);
+  transform: translateX(120%);
+  opacity: 0;
+  transition:
+    transform 0.25s ease,
+    opacity 0.25s ease;
+}
+
+.popup--visible {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.popup--dangerous {
+  background: #e5484d;
+}
+
+.popup--warn {
+  background: #f5a623;
+}
+
+.popup--success {
+  background: #30a46c;
+}
+
+.popup-text {
+  font-size: 15px;
+  line-height: 135%;
+  text-align: left;
+}
+
+.popup-close {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: inherit;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}

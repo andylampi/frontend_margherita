@@ -1,0 +1,15 @@
+.atom-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font: inherit;
+  color: var(--text-h);
+  background: var(--bg);
+}
+
+.atom-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
