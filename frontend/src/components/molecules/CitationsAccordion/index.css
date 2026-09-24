@@ -1,0 +1,70 @@
+.citations {
+  margin-top: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  overflow: hidden;
+}
+
+.citations-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  background: transparent;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-h);
+  cursor: pointer;
+}
+
+.citations-toggle:hover {
+  color: var(--accent);
+}
+
+.citations-chevron {
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.citations--open .citations-chevron {
+  transform: rotate(180deg);
+}
+
+.citations-list {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--border);
+}
+
+.citations-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  font-size: 13px;
+}
+
+.citations-item + .citations-item {
+  border-top: 1px solid var(--border);
+}
+
+.citations-filename {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text-h);
+}
+
+.citations-page {
+  flex-shrink: 0;
+  color: var(--text);
+}

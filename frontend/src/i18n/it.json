@@ -12,5 +12,26 @@
     "success": "Operazione completata con successo.",
     "warn": "Controlla le informazioni inserite.",
     "dangerous": "Si è verificato un errore."
+  },
+  "nav": {
+    "chats": "Chat",
+    "documents": "Documenti"
+  },
+  "documents": {
+    "loading": "Caricamento documenti...",
+    "empty": "Nessun documento caricato.",
+    "upload": "Carica file",
+    "uploading": "Caricamento in corso...",
+    "pages": "pagine"
+  },
+  "chat": {
+    "placeholder": "Scrivi un messaggio...",
+    "send": "Invia",
+    "newChat": "Nuova chat",
+    "empty": "Nessuna chat."
+  },
+  "citations": {
+    "title": "Fonti",
+    "page": "Pagina"
   }
 }

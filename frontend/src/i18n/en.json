@@ -12,5 +12,26 @@
     "success": "Operation completed successfully.",
     "warn": "Please check the information provided.",
     "dangerous": "Something went wrong."
+  },
+  "nav": {
+    "chats": "Chats",
+    "documents": "Documents"
+  },
+  "documents": {
+    "loading": "Loading documents...",
+    "empty": "No documents uploaded yet.",
+    "upload": "Upload files",
+    "uploading": "Uploading...",
+    "pages": "pages"
+  },
+  "chat": {
+    "placeholder": "Write a message...",
+    "send": "Send",
+    "newChat": "New chat",
+    "empty": "No chats yet."
+  },
+  "citations": {
+    "title": "Sources",
+    "page": "Page"
   }
 }

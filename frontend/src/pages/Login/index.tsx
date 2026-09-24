@@ -1,16 +1,15 @@
 import { useState, type MouseEvent } from "react";
-import { useNavigate } from "react-router-dom";
 import Button from "../../components/atoms/Button";
 import Input from "../../components/atoms/Input";
 import { useApi } from "../../hooks/useApi";
-import { useAuthState, usePopup } from "../../utilities/Container";
+import { useAuth } from "../../hooks/useAuth";
+import { usePopup } from "../../utilities/Container";
 import { BASE_URL } from "../../constants";
 import "./index.css";
 
 function Login() {
-  const navigate = useNavigate();
   const { showPopup } = usePopup();
-  const { setIsLogged } = useAuthState();
+  const { login } = useAuth();
   const { POST } = useApi();
   const [loading, setLoading] = useState(false);
 
@@ -24,8 +23,7 @@ function Login() {
         params: { user_id: "test" },
         headers: { "content-type": "application/json" },
       });
-      setIsLogged(true);
-      navigate("/chat");
+      login();
     } catch (error) {
       const message = error instanceof Error ? error.message : undefined;
       showPopup("dangerous", message);

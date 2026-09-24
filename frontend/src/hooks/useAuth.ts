@@ -1,34 +1,14 @@
-import { useEffect } from "react";
-import { BASE_URL } from "../constants";
+import { useCallback } from "react";
 import { useAuthState } from "../utilities/Container";
-import { GET } from "../utilities/api";
 
 export function useAuth() {
   const { isLogged, setIsLogged } = useAuthState();
 
-  useEffect(() => {
-    if (isLogged !== null) {
-      return;
-    }
+  // unico punto in cui isLogged diventa true: login andato a buon fine
+  const login = useCallback(() => setIsLogged(true), [setIsLogged]);
 
-    let cancelled = false;
+  // unico punto in cui isLogged diventa false: una fetch ha restituito 401
+  const unauthorized = useCallback(() => setIsLogged(false), [setIsLogged]);
 
-    GET({ url: `${BASE_URL}/auth/me` })
-      .then(() => {
-        if (!cancelled) {
-          setIsLogged(true);
-        }
-      })
-      .catch(() => {
-        if (!cancelled) {
-          setIsLogged(false);
-        }
-      });
-
-    return () => {
-      cancelled = true;
-    };
-  }, [isLogged, setIsLogged]);
-
-  return { isLogged };
+  return { isLogged, login, unauthorized };
 }

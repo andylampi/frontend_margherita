@@ -15,6 +15,11 @@ async function parseResponse<T>(response: Response): Promise<T> {
     throw new HttpError(response.status);
   }
 
+  // risposte in streaming (es. chat): per ora si legge il corpo come testo
+  if (response.headers.get("content-type")?.includes("application/x-ndjson")) {
+    return response.text() as Promise<T>;
+  }
+
   return response.json() as Promise<T>;
 }
 
@@ -40,11 +45,13 @@ export async function POST<T = unknown>({
   url,
   headers,
   params,
+  body,
 }: RequestOptions): Promise<T> {
   const response = await fetch(url, {
     method: "POST",
     headers: headers,
-    body: params ? JSON.stringify(params) : undefined,
+    // con FormData il browser imposta da solo il content-type multipart con boundary
+    body: body ?? (params ? JSON.stringify(params) : undefined),
     credentials: "include",
   });
 

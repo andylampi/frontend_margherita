@@ -1,36 +1,43 @@
-import { useNavigate } from "react-router-dom";
+import { useCallback } from "react";
 import type { RequestOptions } from "../types";
 import { ApiError, GET as apiGet, POST as apiPost } from "../utilities/api";
-import { useAuthState } from "../utilities/Container";
+import { useAuth } from "./useAuth";
 
 export function useApi() {
-  const navigate = useNavigate();
-  const { setIsLogged } = useAuthState();
+  const { unauthorized } = useAuth();
 
-  function handleError(error: unknown) {
-    if (error instanceof ApiError && error.status === 401) {
-      setIsLogged(false);
-      navigate("/login");
-    }
-  }
+  const handleError = useCallback(
+    (error: unknown) => {
+      if (error instanceof ApiError && error.status === 401) {
+        unauthorized();
+      }
+    },
+    [unauthorized],
+  );
 
-  async function GET<T = unknown>(options: RequestOptions): Promise<T> {
-    try {
-      return await apiGet<T>(options);
-    } catch (error) {
-      handleError(error);
-      throw error;
-    }
-  }
+  const GET = useCallback(
+    async <T = unknown>(options: RequestOptions): Promise<T> => {
+      try {
+        return await apiGet<T>(options);
+      } catch (error) {
+        handleError(error);
+        throw error;
+      }
+    },
+    [handleError],
+  );
 
-  async function POST<T = unknown>(options: RequestOptions): Promise<T> {
-    try {
-      return await apiPost<T>(options);
-    } catch (error) {
-      handleError(error);
-      throw error;
-    }
-  }
+  const POST = useCallback(
+    async <T = unknown>(options: RequestOptions): Promise<T> => {
+      try {
+        return await apiPost<T>(options);
+      } catch (error) {
+        handleError(error);
+        throw error;
+      }
+    },
+    [handleError],
+  );
 
   return { GET, POST };
 }

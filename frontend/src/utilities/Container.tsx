@@ -9,12 +9,22 @@ import type {
   PopupStatus,
 } from "../types";
 
+const AUTH_STORAGE_KEY = "isLogged";
+
+function readStoredIsLogged() {
+  try {
+    return window.localStorage.getItem(AUTH_STORAGE_KEY) === "true";
+  } catch {
+    return false;
+  }
+}
+
 const PopupContext = createContext<PopupContextValue | null>(null);
 const AuthContext = createContext<AuthContextValue | null>(null);
 
 function AppContainer({ children }: AppContainerProps) {
   const [popup, setPopup] = useState<PopupState | null>(null);
-  const [isLogged, setIsLogged] = useState<boolean | null>(null);
+  const [isLogged, setIsLoggedState] = useState<boolean>(readStoredIsLogged);
   const dismissTimeout = useRef<number | undefined>(undefined);
 
   const showPopup = useCallback((status: PopupStatus, text?: string) => {
@@ -23,6 +33,15 @@ function AppContainer({ children }: AppContainerProps) {
     dismissTimeout.current = window.setTimeout(() => {
       setPopup(null);
     }, AUTO_DISMISS_MS);
+  }, []);
+
+  const setIsLogged = useCallback((value: boolean) => {
+    setIsLoggedState(value);
+    try {
+      window.localStorage.setItem(AUTH_STORAGE_KEY, String(value));
+    } catch {
+      // storage non disponibile: lo stato resta solo in memoria
+    }
   }, []);
 
   const closePopup = useCallback(() => {
