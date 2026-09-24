@@ -1,0 +1,41 @@
+.welcome {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  color: var(--accent);
+}
+
+.welcome-arm {
+  transform-origin: 60px 60px;
+  transform-box: view-box;
+  animation: welcome-wave 1.4s ease-in-out infinite;
+}
+
+.welcome-text {
+  color: var(--text-h);
+  font-size: 18px;
+}
+
+@keyframes welcome-wave {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+
+  25% {
+    transform: rotate(-20deg);
+  }
+
+  75% {
+    transform: rotate(15deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .welcome-arm {
+    animation: none;
+  }
+}

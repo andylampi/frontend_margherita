@@ -15,7 +15,8 @@
   },
   "nav": {
     "chats": "Chats",
-    "documents": "Documents"
+    "documents": "Documents",
+    "logout": "Logout"
   },
   "documents": {
     "loading": "Loading documents...",
@@ -28,10 +29,18 @@
     "placeholder": "Write a message...",
     "send": "Send",
     "newChat": "New chat",
-    "empty": "No chats yet."
+    "empty": "No chats yet.",
+    "welcome": "Hi! How can I help you?"
   },
   "citations": {
     "title": "Sources",
     "page": "Page"
+  },
+  "pdf": {
+    "loading": "Loading document...",
+    "error": "Unable to load the document.",
+    "previous": "Previous page",
+    "next": "Next page",
+    "close": "Close document"
   }
 }

@@ -2,6 +2,7 @@
   flex: 0 0 auto;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   height: 56px;
   box-sizing: border-box;
   padding: 0 16px;
@@ -29,4 +30,20 @@
 .top-bar-link--active {
   color: var(--accent);
   background: var(--accent-bg);
+}
+
+.top-bar-logout {
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text-h);
+  font: inherit;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.top-bar-logout:hover {
+  border-color: var(--accent);
+  color: var(--accent);
 }

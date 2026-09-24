@@ -3,10 +3,17 @@ import Button from "../../components/atoms/Button";
 import Input from "../../components/atoms/Input";
 import ChatCard from "../../components/molecules/ChatCard";
 import ChatMessage from "../../components/molecules/ChatMessage";
+import PdfViewer from "../../components/molecules/PdfViewer";
+import Welcome from "../../components/molecules/Welcome";
 import { BASE_URL } from "../../constants";
 import { useApi } from "../../hooks/useApi";
 import { dictionary } from "../../i18n";
-import type { ChatMessageItem, ChatRecord, ChatSummary } from "../../types";
+import type {
+  ChatMessageItem,
+  ChatRecord,
+  ChatSummary,
+  Citation,
+} from "../../types";
 import { createSpecialWord, groupChats, toChatMessages } from "../../utilities/chats";
 import { usePopup } from "../../utilities/Container";
 import "./index.css";
@@ -23,6 +30,7 @@ function Chat() {
   const [messages, setMessages] = useState<ChatMessageItem[]>([]);
   const [specialWord, setSpecialWord] = useState(createSpecialWord);
   const [chats, setChats] = useState<ChatSummary[]>([]);
+  const [citation, setCitation] = useState<Citation | null>(null);
 
   const fetchChats = useCallback(async () => {
     const records: ChatRecord[] = [];
@@ -54,6 +62,7 @@ function Chat() {
 
   async function handleOpenChat(chatSpecialWord: string) {
     setMessage("");
+    setCitation(null);
     setSpecialWord(chatSpecialWord);
 
     try {
@@ -69,6 +78,7 @@ function Chat() {
   function handleNewChat() {
     setSpecialWord(createSpecialWord());
     setMessages([]);
+    setCitation(null);
     setMessage("");
   }
 
@@ -80,9 +90,10 @@ function Chat() {
       return;
     }
 
+    const userMessageId = crypto.randomUUID();
     setMessages((current) => [
       ...current,
-      { id: crypto.randomUUID(), role: "user", content: query },
+      { id: userMessageId, role: "user", content: query },
     ]);
     setMessage("");
     setSending(true);
@@ -96,6 +107,10 @@ function Chat() {
       // ricarica la chat dal server per mostrare anche la risposta
       await handleOpenChat(specialWord);
     } catch (error) {
+      // l'invio è fallito: il messaggio dell'utente non resta nella chat
+      setMessages((current) =>
+        current.filter((item) => item.id !== userMessageId),
+      );
       const text = error instanceof Error ? error.message : undefined;
       showPopup("dangerous", text);
     } finally {
@@ -150,6 +165,7 @@ function Chat() {
                 created_at={chat.created_at}
                 onClick={() => handleOpenChat(chat.specialWord)}
                 disabled={sending}
+                active={chat.specialWord === specialWord}
               />
             ))}
           </nav>
@@ -157,12 +173,14 @@ function Chat() {
       </aside>
       <main className="chat-main">
         <div className="chat-messages">
+          {messages.length === 0 && !sending && <Welcome />}
           {messages.map(({ id, role, content, citations }) => (
             <ChatMessage
               key={id}
               role={role}
               content={content}
               citations={citations}
+              onCitationClick={setCitation}
             />
           ))}
           {sending && <ChatMessage role="assistant" loading />}
@@ -185,6 +203,30 @@ function Chat() {
           </Button>
         </form>
       </main>
+      {citation && (
+        <aside className="chat-viewer">
+          <div className="chat-viewer-header">
+            <span className="chat-viewer-title" title={citation.filename}>
+              {citation.filename}
+            </span>
+            <button
+              type="button"
+              className="chat-viewer-close"
+              onClick={() => setCitation(null)}
+              aria-label={dictionary.pdf.close}
+            >
+              ×
+            </button>
+          </div>
+          <PdfViewer
+            // key: a ogni nuova citazione il viewer riparte dalla pagina citata
+            key={`${citation.document_id}-${citation.page_number}`}
+            url={`${BASE_URL}/documents/${citation.document_id}/file`}
+            pageNumber={citation.page_number}
+            highlights={citation.bounding_regions}
+          />
+        </aside>
+      )}
     </div>
   );
 }

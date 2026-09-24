@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom";
+import { useAuth } from "../../../hooks/useAuth";
 import { dictionary } from "../../../i18n";
 import "./index.css";
 
@@ -8,6 +9,8 @@ const LINKS = [
 ];
 
 function TopBar() {
+  const { logout } = useAuth();
+
   return (
     <header className="top-bar">
       <nav className="top-bar-nav">
@@ -23,6 +26,9 @@ function TopBar() {
           </NavLink>
         ))}
       </nav>
+      <button type="button" className="top-bar-logout" onClick={logout}>
+        {dictionary.nav.logout}
+      </button>
     </header>
   );
 }

@@ -56,12 +56,23 @@ export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement>;
 
 export type ChatRole = "user" | "assistant";
 
+export type BoundingRegion = {
+  page_number: number;
+  rects_in: number[][];
+};
+
 export type Citation = {
   document_id: string;
   filename: string;
   page_number: number;
   text_quote?: string;
-  bounding_regions: unknown[];
+  bounding_regions: BoundingRegion[];
+};
+
+export type PdfViewerProps = {
+  url: string;
+  pageNumber?: number;
+  highlights?: BoundingRegion[];
 };
 
 export type ChatMessageItem = {
@@ -76,10 +87,12 @@ export type ChatMessageProps = {
   content?: string;
   loading?: boolean;
   citations?: Citation[];
+  onCitationClick?: (citation: Citation) => void;
 };
 
 export type CitationsAccordionProps = {
   citations: Citation[];
+  onCitationClick?: (citation: Citation) => void;
 };
 
 export type ChatRecord = {
@@ -103,4 +116,5 @@ export type ChatCardProps = {
   created_at: string;
   onClick?: () => void;
   disabled?: boolean;
+  active?: boolean;
 };

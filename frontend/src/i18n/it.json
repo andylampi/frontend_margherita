@@ -15,7 +15,8 @@
   },
   "nav": {
     "chats": "Chat",
-    "documents": "Documenti"
+    "documents": "Documenti",
+    "logout": "Esci"
   },
   "documents": {
     "loading": "Caricamento documenti...",
@@ -28,10 +29,18 @@
     "placeholder": "Scrivi un messaggio...",
     "send": "Invia",
     "newChat": "Nuova chat",
-    "empty": "Nessuna chat."
+    "empty": "Nessuna chat.",
+    "welcome": "Ciao! Come posso aiutarti?"
   },
   "citations": {
     "title": "Fonti",
     "page": "Pagina"
+  },
+  "pdf": {
+    "loading": "Caricamento documento...",
+    "error": "Impossibile caricare il documento.",
+    "previous": "Pagina precedente",
+    "next": "Pagina successiva",
+    "close": "Chiudi documento"
   }
 }

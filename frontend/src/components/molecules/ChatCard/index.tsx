@@ -2,7 +2,13 @@ import { locale } from "../../../i18n";
 import type { ChatCardProps } from "../../../types";
 import "./index.css";
 
-function ChatCard({ title, created_at, onClick, disabled }: ChatCardProps) {
+function ChatCard({
+  title,
+  created_at,
+  onClick,
+  disabled,
+  active = false,
+}: ChatCardProps) {
   const date = new Date(created_at).toLocaleString(locale, {
     dateStyle: "short",
     timeStyle: "short",
@@ -11,7 +17,8 @@ function ChatCard({ title, created_at, onClick, disabled }: ChatCardProps) {
   return (
     <button
       type="button"
-      className="chat-card"
+      className={`chat-card ${active ? "chat-card--active" : ""}`.trim()}
+      aria-current={active || undefined}
       title={title}
       onClick={onClick}
       disabled={disabled}

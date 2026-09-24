@@ -25,12 +25,15 @@
   font-size: 12px;
 }
 
+.chat-card--active,
 .chat-card:hover:not(:disabled) {
   border-color: var(--accent);
   background: var(--accent);
   cursor: pointer;
 }
 
+.chat-card--active .chat-card-title,
+.chat-card--active .chat-card-date,
 .chat-card:hover:not(:disabled) .chat-card-title,
 .chat-card:hover:not(:disabled) .chat-card-date {
   color: #fff;

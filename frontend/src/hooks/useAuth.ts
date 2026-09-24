@@ -10,5 +10,8 @@ export function useAuth() {
   // unico punto in cui isLogged diventa false: una fetch ha restituito 401
   const unauthorized = useCallback(() => setIsLogged(false), [setIsLogged]);
 
-  return { isLogged, login, unauthorized };
+  // logout esplicito dell'utente dalla top bar
+  const logout = useCallback(() => setIsLogged(false), [setIsLogged]);
+
+  return { isLogged, login, unauthorized, logout };
 }

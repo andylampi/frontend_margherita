@@ -3,7 +3,7 @@ import { dictionary } from "../../../i18n";
 import type { CitationsAccordionProps } from "../../../types";
 import "./index.css";
 
-function CitationsAccordion({ citations }: CitationsAccordionProps) {
+function CitationsAccordion({ citations, onCitationClick }: CitationsAccordionProps) {
   const [open, setOpen] = useState(false);
   const panelId = useId();
 
@@ -41,12 +41,18 @@ function CitationsAccordion({ citations }: CitationsAccordionProps) {
               key={`${citation.document_id}-${citation.page_number}-${index}`}
               className="citations-item"
             >
-              <span className="citations-filename" title={citation.filename}>
-                {citation.filename}
-              </span>
-              <span className="citations-page">
-                {dictionary.citations.page} {citation.page_number}
-              </span>
+              <button
+                type="button"
+                className="citations-link"
+                onClick={() => onCitationClick?.(citation)}
+              >
+                <span className="citations-filename" title={citation.filename}>
+                  {citation.filename}
+                </span>
+                <span className="citations-page">
+                  {dictionary.citations.page} {citation.page_number}
+                </span>
+              </button>
             </li>
           ))}
         </ul>

@@ -15,6 +15,7 @@ function ChatMessage({
   content = "",
   loading = false,
   citations = [],
+  onCitationClick,
 }: ChatMessageProps) {
   function renderContent() {
     if (loading) {
@@ -39,7 +40,12 @@ function ChatMessage({
             {content}
           </Markdown>
         </div>
-        {citations.length > 0 && <CitationsAccordion citations={citations} />}
+        {citations.length > 0 && (
+          <CitationsAccordion
+            citations={citations}
+            onCitationClick={onCitationClick}
+          />
+        )}
       </>
     );
   }

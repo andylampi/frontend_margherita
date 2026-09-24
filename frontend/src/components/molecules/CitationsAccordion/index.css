@@ -44,13 +44,23 @@
   border-top: 1px solid var(--border);
 }
 
-.citations-item {
+.citations-link {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 12px;
+  width: 100%;
   padding: 8px 12px;
+  border: none;
+  background: transparent;
+  font: inherit;
   font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.citations-link:hover {
+  background: var(--accent-bg);
 }
 
 .citations-item + .citations-item {
