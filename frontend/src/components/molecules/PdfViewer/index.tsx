@@ -109,7 +109,9 @@ function PdfViewer({ url, pageNumber = 1, highlights = [] }: PdfViewerProps) {
           suspense={false}
           onLoadSuccess={handleLoadSuccess}
           onLoadError={handleLoadError}
-          loading={<p className="pdf-viewer-message">{dictionary.pdf.loading}</p>}
+          loading={
+            <p className="pdf-viewer-message">{dictionary.pdf.loading}</p>
+          }
           error={
             <p className="pdf-viewer-message pdf-viewer-message--error">
               {dictionary.pdf.error}
