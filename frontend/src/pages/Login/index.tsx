@@ -52,7 +52,7 @@ function Login() {
         <Input
           type="email"
           name="email"
-          placeholder="Email"
+          placeholder="Username"
           autoComplete="email"
         />
         <Input

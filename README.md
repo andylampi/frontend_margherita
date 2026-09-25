@@ -167,6 +167,15 @@ Gestisce lo stato di login.
 - `unauthorized()`: lo mette a `false`, quando una chiamata restituisce **401**.
 - `logout()`: lo mette a `false`, quando l'utente clicca su logout.
 
+<details>
+<summary>Come funziona il logout</summary>
+
+Il logout si limita a mettere `isLogged` a `false` (anche in localStorage): l'utente viene rimandato alla login e le pagine protette non sono più accessibili.
+
+**Durante una risposta in streaming il pulsante è disabilitato**, così la risposta non viene interrotta a metà.
+
+</details>
+
 #### `useApi`
 
 Espone le funzioni per le chiamate HTTP: `GET`, `POST` e `POST_STREAM` (per le risposte in streaming della chat).
