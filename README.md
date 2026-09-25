@@ -205,15 +205,6 @@ Oggi i tipi in `types.ts` (es. `ChatRecord`, `DocumentItem`) ricalcano esattamen
 
 - **DTO** (`ChatRecordDto`, …): descrivono il JSON così come arriva, con i suoi nomi (`created_at`, `page_count`, …);
 
-<details>
-<summary>Cosa si guadagna</summary>
-
-- **Chiarezza**: si vede subito cosa arriva dalle API e cosa usa la UI.
-- **Isolamento**: se cambia il formato di una risposta, si modifica solo il DTO e il suo mapper, non i componenti.
-- **Meno logica sparsa**: conversioni come date e special word oggi sono distribuite nel codice, con i mapper stanno in un solo posto.
-
-</details>
-
 ### Test
 
 Il progetto non ha ancora test. Non sarebbe male aggiungerli, anche **React Testing Library** potrebbe essere aggiunto un domani per la documentazione dei componenti (in questo progetto non mi sembrava il caso di aggiungerlo).
