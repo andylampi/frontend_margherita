@@ -1,5 +1,7 @@
 # 🍕 Margherita — Frontend
 
+![Demo](frontend/src/assets/demo.gif)
+
 **Indice**
 [Avvio](#-avvio) · [Scelte tecniche](#-scelte-tecniche) · [Struttura del progetto](#-struttura-del-progetto) · [Docker](#-docker) · [Possibili miglioramenti](#-possibili-miglioramenti)
 

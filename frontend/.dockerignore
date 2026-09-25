@@ -3,3 +3,7 @@ dist
 .env
 .git
 *.log
+
+# video e gif della demo: servono solo al README
+src/assets/*.mov
+src/assets/demo.gif
