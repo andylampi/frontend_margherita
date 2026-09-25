@@ -1,0 +1,64 @@
+24 settembre 
+
+"Allora leggi il package.json per comprendere le vesioni delle librerie che stiamo utilizzando",
+  `Ora inizia ad integrare le routes, devi creare una route per il login, questa dovrà essere la prima ad essere visualizzata, per ora renderizza un semplice hello world.
+Crea un'altra route protetta, dovrà essere protetta da un custom hook che verifica, se nel cookie c'è user_id allora l'utente può proseguire su /chat, altrimenti rimanda alla login`,
+  "le routes definiscile nel file routes.ts e poi lo integri in app ts",
+  "Ora nella cartella pages crea una pagina per la login, falla semplice metti un'icona in un div con radius al 100% e 2 input per email e password, falla minimal. Crea dei componenti per gli inputs e mettili in una cartella atoms sotto components. La funzione protectedRoute mettila in una cartella di nome utilities",
+  "crea un altro componente atomico, pulsante che ha la stessa filosofia degli input e in più prende degli handler come per il click",
+  `Le pagine e i componenti che crei devono avere una struttura precisa:
+Cartella( nome idefintificativo tipo "Login")
+Dentro la cartella ci sarà:
+index.tsx -> inserisci tutto il codice dentro
+index.css -> tutto lo stile che poi importi in index.tsx`,
+  "Ora nella cartella utilities crea un file dove crei dei wrap per le fetch, uno lo chiami GET e un altro POST, queste 2 funzionalità prenderanno dei parametri come header, params, url",
+  `Ora mi crei un altro wrap su GET e POST dove avviene anche la gestione degli errori, la gestione degli errori deve essere con una mappatura, crea una cartella i18n dove metti en.json e it.json e li andiamo a creare una sezione per gli errori.
+Dopo implementiamo AppContainer e creiamo una variabile di stato per mostrare un pop up sulla destra a scomparsa, il pop up deve prendere una prop status (dangerous, warn, success) e in base a quale gli viene passata applichi un determinato colore, deve esserci anche la possibilità di passare un testo, se non è passato prende uno di default da i18n`,
+  "Ora crea una nuova pagina Chat, la pagina sarà composta in questo modo: div principale flex, dentro 2 div uno a sinistra(menù) che occupa circa il 20% e uno a destra(chat) 80%. La chat deve potersi estendere fino al 95% e il menù deve potersi ridurre fino a rimanere una semplice colonna con hamburger menu in alto.",
+  "Ora implementa un file .env per mettere le variabili d'ambiente e ne metti una BASE_URL=localhost:8000, poi chiami POST nell'handler del pulsante LOGIN nella schermata di accesso, passi il parametro user_id, per ora metti 'test' come valore. Se la richiesta va a buon fine rendirizzi l'utente sul percorso chat",
+  "crea un file constants e metti tutte le costanti, poi i types che hai creato mettili in un file types.ts",
+  "Cancella il controllo del cookie com'è in questo modo e inserisci il credentials: 'include' nelle richieste.",
+  `Allora crea un custom hook che controlla lo status code delle funzione GET o POST, se è 401 rimandi l'utente alla pagina di login e setti isLogged false.
+Allora crea uno stato globale e lo chiami isLogged e lo metti a true quando il login va a buon fine.`,
+  "creami un file export con i prompt che ti ho chiesto",
+  `Modifica useAuth, isLogged deve essere settato false se e solo se una fetch restituiisce 401 e true solo al login. 
+Se è isLogged è true non la pagine di login non è più accessibile e rendirizzi tutti i tentativi su chat, invece se isLogged è false rendirizzi tutti i tentativi su login`,
+  `Crea una nuova route e la chiami Documents, applichi lo stesso discorso della routes chats. 
+Dopo crei una top bar (che dovrà essere sempre presente in ogni pagina tranne che login) in molecules che contiene le voci Chats e Documents (queste parole devono essere tradotte in base alla lingua del browser, quindi usa i18n). Utilizza <Outlet /> per poter implementare la pagina corretta ed avere fisso la top bar. 
+
+Crea una pagina Documents in cui appena caricata chiamerai una GET per recuperare la lista dei documenti presenti sul server.
+La pagina la dividi in 2 div in, il primo avrà un'altezza del 70% e mostra una lista di documenti, il secondo div 30% e al centro avrà un pulsante per caricare nuovi file, crea anche l'handler che effettua una post di tipo multipart form`,
+  "Aggiungi un input nella pagina chat e un pulsante in modo da poter inserire del testo ed inviarlo, metti già un handler al click sul pulsante in modo che effettua una POST",
+  "Perfetto, al click metti il messaggio all'interno di un div sulla destra  (justify-content: flex-end) e blocca l'input e il pulsante; poi metti un altro messaggio sulla sinistra con un preloader (metti tre pallini animati per ora), quest'ultimo componente metto in molecules.",
+  "Crea un pulsante in alto, sotto al pulsante hamburger menu per creare una nuova chat, la larghezza del pulsante dovrà basarsi sulla larghezza del menù. Il testo all'interno dovrà sempre basarsi sulla lingua del browser.",
+  "La larghezza del pulsante new chat deve essere coerente con il pulsante menu quando è chiuso.",
+  "Allarga il pulsante menù come il pulsante new chat e aggiungi il test ChatBotAI prima dell'hamburger icon",
+
+
+-----------------------------------------------------------
+
+25 settembre 
+
+  "Quando crei una nuova chat devi creare una special word che non sarà mai mostrata a FE, questa parola sarà inserita all'inizio del testo inserito nell'input quando verrà effettuata la post, la parola deve terminare con special_word. Questa parola non dovrà essere mostrata nella chat",
+  `Ora dovrai creare delle card che rappresenteranno le chat nel menù a sinistra (questo componente lo metterai in molecules) . 
+Queste card accetteranno title, creat_at. 
+Per recuperare i dati  dovrai fare una GET in CHAT, riceverai una lista di tutti i messaggi, per comprendere se un messaggio è già compreso in un altro basterà vedere se la special_word è già presente, la struttura è della risposta è la seguente: 
+array di oggetti, ogni singolo oggetto: 
+id: string, user_id: string, create_at: string, query: "string con la special_word", response: "string", citations: array di oggetti (per ora lascialo perdere)`,
+  "Aggiungi mouseHover sulle chatCard, quando si attiva la card diventa viola e il testo bianco e il cursor: pointer",
+  "Al click ti recuperi tutti i messaggi con le relative risposte e li carichi nella chat",
+  "per renderizzare correttamente le risposte usa react-markdown + remark-gfm + rehype-raw + rehype-sanitize",
+  `Nelle risposte c'è una voce chiamata: citations, questa voce è un array di oggetti, ogni oggetto ha:  document_id (serve per recuperare il pdf dal server), filename: string, page_number: number, bounding_regions che per ora lascia stare, è un array. 
+Crea un accordion che mostra queste citazioni, crea il componente per questo in molecules`,
+  `Citations è un array di oggetti, ogni oggetto è composto da: 
+page_number:  numeber, rects_in: array int 
+
+Utilizza react-pdf  per visualizzare i pdf. Crea un componente in molecules che prende come props url che passerai alla props file del component Document di react-pdf, nel caso in cui andasse in errore mostra un messaggio di errore e fai appare la props con un errore. Il componente finale dovrà essere usato in chat 
+Dal backend arriva un content-type: application/pdf.`,
+  "rects_in per evidenziare la parte interessata",
+  "Nella topbar metti a destra un pulsante di logout, ti basta settare isLogged su false",
+  "crea un file txt con tutti i prompt inviati",
+  "Evidenzia sulla sinistra la chat che si sta utilizzando, tipo colorola di viola",
+  "Quando nessuna chat è caricata nella pagina CHAT metti un uomino al centro  che saluta",
+  "Quando un messaggio va in errore cancella anche quello inviato dall'utente",
+  "aggiungi gli ultimi prompt al file",
